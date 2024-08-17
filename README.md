@@ -1,6 +1,6 @@
-# TeRS (tay-ars)
+# TeyRS (tay-rs)
 
-**TeRS** is a terminal-based file explorer and command execution tool written in Rust. It provides a colorful and interactive interface for navigating directories, executing shell commands, and viewing file metadata.
+**TeyRS** is a terminal-based file explorer and command execution tool written in Rust. It provides a colorful and interactive interface for navigating directories, executing shell commands, and viewing file metadata.
 
 ![RSExplorer Screenshot](assets/screenshot.png)
 
@@ -18,13 +18,13 @@
 2. Clone this repository:
 
    ```sh
-   git clone https://github.com/your-username/ters.git
+   git clone https://github.com/jawadr9899/teyrs.git
    ```
 
 3. Navigate to the project directory:
 
    ```sh
-   cd ters
+   cd teyrs
    ```
 
 4. Build the project:
@@ -36,7 +36,7 @@
 5. Run the executable:
 
    ```sh
-   ./target/release/ters
+   ./target/release/teyrs
    ```
 
 ## Usage
