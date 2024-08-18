@@ -188,41 +188,42 @@ pub fn clear_terminal() -> io::Result<()> {
     Ok(())
 }
 
-pub fn run_command(command: &str, args: &[&str]) -> Result<(), io::Error> {
-    let process = Command::new(command)
-        .args(args)
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()?;
+pub fn run_command(command: &str, args: &Vec<&str>) -> Result<(), io::Error> {
+    for (i, arg) in args.iter().enumerate() {
+        let process = Command::new(command)
+            .arg(arg)
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .spawn()?;
 
-    let output = process.wait_with_output()?;
+        let output = process.wait_with_output()?;
 
-    if output.status.success() {
-        print_colorfully(
-            "- [OUTPUT]:\n\n",
-            ContentStyle::new().green(),
-            Attribute::Bold,
-        )?;
+        if output.status.success() {
+            print_colorfully(
+                format!("- [OUTPUT {}]:\n", i + 1).as_str(),
+                ContentStyle::new().green(),
+                Attribute::Bold,
+            )?;
 
-        let stdout = &output.stdout;
-        let mut stdout_str = String::with_capacity(stdout.len());
-        for chunk in stdout.chunks(1024) {
-            stdout_str.push_str(&String::from_utf8_lossy(chunk));
+            let stdout = &output.stdout;
+            let mut stdout_str = String::with_capacity(stdout.len());
+            for chunk in stdout.chunks(1024) {
+                stdout_str.push_str(&String::from_utf8_lossy(chunk));
+            }
+
+            let indented_output = stdout_str
+                .lines()
+                .map(|line| format!("-- \t{}", line))
+                .collect::<Vec<String>>()
+                .join("\n");
+
+            print_colorfully(&indented_output, ContentStyle::new().grey(), Attribute::Dim)?;
+            println!("\n");
+        } else {
+            let stderr = String::from_utf8_lossy(&output.stderr);
+            print_error_colorfully(&stderr)?;
+            return Err(io::Error::new(io::ErrorKind::Other, "Command failed"));
         }
-
-        let indented_output = stdout_str
-            .lines()
-            .map(|line| format!("-- \t{}", line))
-            .collect::<Vec<String>>()
-            .join("\n");
-
-        print_colorfully(&indented_output, ContentStyle::new().grey(), Attribute::Dim)?;
-        println!();
-    } else {
-        let stderr = String::from_utf8_lossy(&output.stderr);
-        print_error_colorfully(&stderr)?;
-        return Err(io::Error::new(io::ErrorKind::Other, "Command failed"));
     }
-
     Ok(())
 }

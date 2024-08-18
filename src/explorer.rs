@@ -50,26 +50,28 @@ pub fn handle_mv_cmd(args: &[&str], dir: &mut SysDir) -> Result<(), Error> {
 }
 
 pub fn process_cmd(cmd_str: String, dir: &mut SysDir) -> Result<(), Error> {
-    let mut cmd_parts = cmd_str.trim().split_whitespace().collect::<Vec<&str>>();
+    let mut cmd_parts = cmd_str.trim().split(" ").collect::<Vec<&str>>();
     if cmd_parts.is_empty() {
         clear_terminal()?;
         print_error_colorfully("No Command Entered!")?;
         dir.refresh(SysDir::from(dir.path.to_string()))?;
         return Ok(());
     }
-
     let cmd = cmd_parts.remove(0);
+
     match cmd {
         "mv" => {
             handle_mv_cmd(&cmd_parts, dir)?;
         }
         "run" => {
+            let rebuilt_cmd = cmd_parts.join(" ").to_string();
+            let args = rebuilt_cmd.split(";").collect::<Vec<&str>>();
             print_colorfully(
                 "- Processing...\n",
                 ContentStyle::new().red(),
                 Attribute::Bold,
             )?;
-            match run_command(TERMINAL, &cmd_parts) {
+            match run_command(TERMINAL, &args) {
                 Ok(_) => {
                     dir.refresh(SysDir::from(dir.path.to_string()))?;
                     println!();
