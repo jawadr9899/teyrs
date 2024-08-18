@@ -2,7 +2,7 @@
 
 **TeyRS** is a terminal-based file explorer and command execution tool written in Rust. It provides a colorful and interactive interface for navigating directories, executing shell commands, and viewing file metadata.
 
-![RSExplorer Screenshot](assets/screenshot.png)
+![TeyRS Screenshot](assets/screenshot.png)
 
 ## Features
 
