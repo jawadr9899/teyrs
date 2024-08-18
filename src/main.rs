@@ -8,6 +8,7 @@ use crossterm::style::{Attribute, Color, ContentStyle, Stylize};
 use explorer::show_menu;
 use sysdir::SysDir;
 use utils::print_colorfully;
+const TERMINAL: &str = "wsl";
 
 fn init() -> Result<(), std::io::Error> {
     print_colorfully(

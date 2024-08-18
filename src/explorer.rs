@@ -8,6 +8,7 @@ use crate::sysdir::SysDir;
 use crate::utils::{
     clear_terminal, print_colorfully, print_error_colorfully, run_command, show_dirs, show_metadata,
 };
+use crate::TERMINAL;
 use crossterm::style::{Attribute, ContentStyle, Stylize};
 
 pub fn show_menu(dir: &mut SysDir) -> Result<(), Error> {
@@ -58,7 +59,6 @@ pub fn process_cmd(cmd_str: String, dir: &mut SysDir) -> Result<(), Error> {
     }
 
     let cmd = cmd_parts.remove(0);
-
     match cmd {
         "mv" => {
             handle_mv_cmd(&cmd_parts, dir)?;
@@ -69,7 +69,7 @@ pub fn process_cmd(cmd_str: String, dir: &mut SysDir) -> Result<(), Error> {
                 ContentStyle::new().red(),
                 Attribute::Bold,
             )?;
-            if let Ok(_) = run_command("wsl", &cmd_parts) {
+            if let Ok(_) = run_command(TERMINAL, &cmd_parts) {
                 dir.refresh(SysDir::from(dir.path.to_string()))?;
                 println!();
             } else {
