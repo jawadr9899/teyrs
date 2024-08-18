@@ -11,7 +11,7 @@ use utils::print_colorfully;
 
 fn init() -> Result<(), std::io::Error> {
     print_colorfully(
-        "\n- TeRS\n\n",
+        "\n- TeyRS\n\n",
         ContentStyle::new().with(Color::AnsiValue(212u8)),
         Attribute::Bold,
     )?;
