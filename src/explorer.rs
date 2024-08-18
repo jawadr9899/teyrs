@@ -69,13 +69,14 @@ pub fn process_cmd(cmd_str: String, dir: &mut SysDir) -> Result<(), Error> {
                 ContentStyle::new().red(),
                 Attribute::Bold,
             )?;
-            if let Ok(_) = run_command(TERMINAL, &cmd_parts) {
-                dir.refresh(SysDir::from(dir.path.to_string()))?;
-                println!();
-            } else {
-                clear_terminal()?;
-                print_error_colorfully("Failed to run command!")?;
-                dir.refresh(SysDir::from(dir.path.to_string()))?;
+            match run_command(TERMINAL, &cmd_parts) {
+                Ok(_) => {
+                    dir.refresh(SysDir::from(dir.path.to_string()))?;
+                    println!();
+                }
+                Err(_) => {
+                    dir.refresh(SysDir::from(dir.path.to_string()))?;
+                }
             }
         }
         "cls" => {

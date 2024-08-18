@@ -8,7 +8,7 @@ use crossterm::style::{Attribute, Color, ContentStyle, Stylize};
 use explorer::show_menu;
 use sysdir::SysDir;
 use utils::print_colorfully;
-const TERMINAL: &str = "wsl";
+const TERMINAL: &str = "powershell";
 
 fn init() -> Result<(), std::io::Error> {
     print_colorfully(
